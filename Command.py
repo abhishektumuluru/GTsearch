@@ -91,6 +91,14 @@ class Command:
     def mfp(args):
         pass
 
+    def slack(args):
+        pass
+
+    def tiny(arg):
+        if arg:
+            return 'http://tinyurl.com/api-create.php?url={0}'.format(arg)
+        return 'http://tinyurl.com/'
+
     def canvas(args):
         return 'https://gatech.instructure.com/'
 
@@ -101,7 +109,8 @@ class Command:
 
     def matlab(args):
         if args:
-            return 'https://www.mathworks.com/help/search.html?qdoc={0}&submitsearch='.format(args)
+            return 'https://www.mathworks.com/help/'\
+                'search.html?qdoc={0}&submitsearch='.format(args)
         return 'https://www.mathworks.com/help/'
 
     def drive(args):
@@ -142,7 +151,8 @@ class Command:
 
     def yt(args):
         if args:
-            return 'http://www.youtube.com/results?search_query={0}&search_type=&aq=-1&oq='.format(args)
+            return 'http://www.youtube.com/results?'\
+                'search_query={0}&search_type=&aq=-1&oq='.format(args)
         return 'http://www.youtube.com'
 
     def reddit(args):
@@ -150,7 +160,8 @@ class Command:
             args_split = args.split(maxsplit=1)
             if len(args_split) == 1:
                 return 'http://www.reddit.com/r/{0}'.format(args)
-            return 'http://www.reddit.com/r/{0}/search?q={1}&restrict_sr=1'.format(args_split[0], args_split[1])
+            return 'http://www.reddit.com/r/{0}/search?q={1}'\
+                '&restrict_sr=1'.format(args_split[0], args_split[1])
         return 'http://www.reddit.com/'
 
     def fb(arg):
@@ -180,11 +191,13 @@ class Command:
     def stack_overflow_lucky(args):
         # Will attempt I'm feeling lucky if there is high confidence
         if args:
-            return '{0} site:stackoverflow.com'.format(Command.im_feeling_lucky(args))
+            return '{0} site:stackoverflow.com'\
+                .format(Command.im_feeling_lucky(args))
         return 'http://www.stackoverflow.com/'
 
     def dw(args):
-        return 'https://login.gatech.edu/cas/login?service=https%3A%2F%2Fdegreeaudit.gatech.edu'
+        return 'https://login.gatech.edu/cas/login?'\
+            'service=https%3A%2F%2Fdegreeaudit.gatech.edu'
 
     def twitter(arg):
         if arg:
@@ -220,7 +233,8 @@ class Command:
         return 'http://gatech.courseoff.com/workspace'
 
     def stamps(args):
-        return 'http://login.gatech.edu/cas/login?TARGET=https%3a%2f%2fwww.myappointment.health.gatech.edu%2fdefault.aspx'
+        return 'http://login.gatech.edu/cas/login?TARGET'\
+            '=https%3a%2f%2fwww.myappointment.health.gatech.edu%2fdefault.aspx'
 
     def jobs(args):
         return 'https://gatech-csm.symplicity.com/students/index.php?s=home'
