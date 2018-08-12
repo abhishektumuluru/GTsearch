@@ -24,14 +24,17 @@ def synchronize(lock):
 
 
 def create_shortcut_to_function_map():
-    # Creating this map in case the name of the function is not
-    # the shortcut, like "$" for stock
-    # which cannot be a function declaration in Python
+    """
+    Creating this map in case the name of the function is not
+    the shortcut, like "$" for stock
+    which cannot be a function declaration in Python
+    """
     shortcut_to_function_map = dict()
     for cmd in Command.__dict__:
         cmd_function = getattr(Command, cmd)
         if callable(cmd_function):
             shortcut_to_function_map[cmd_function.shortcut] = cmd_function
+            shortcut_to_function_map[cmd_function.__name__] = cmd_function
     return shortcut_to_function_map
 
 
@@ -70,6 +73,9 @@ def get_redirect_url(search_query):
             command_function = getattr(Command,
                                        shortcut_to_function_map[cmd].__name__)
             url = command_function.__call__(arg)
+            if url is None:
+                # If shortcut is not implemented but is present
+                return Command.default(cmd + ' ' + (arg if arg else ''))
             return url
         except TypeError as te:
             print(repr(te))

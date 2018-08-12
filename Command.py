@@ -44,7 +44,11 @@ class AttributeWrapper:
                 func.shortcut = "tw"
             elif func.__name__ == "courseoff":
                 func.shortcut = "co"
-            # Add other potential specific shortcuts here
+            elif func.__name__ == "spotify":
+                func.shortcut = "spot"
+            elif func.__name__ == "matlab":
+                func.shortcut = "mat"
+            # add other potential specific shortcuts here
             else:
                 func.shortcut = func.__name__
             return func
@@ -52,20 +56,13 @@ class AttributeWrapper:
 
     def set_autocorrect():
         def assign(func):
-            if len(func.shortcut) > 5:
+            if len(func.shortcut) > 5 or len(func.__name__) > 5:
                 # Only attempt to autocorrect long shortcuts
                 func.enable_autocorrect = True
             else:
                 func.enable_autocorrect = False
             return func
         return assign
-
-    def convert_none_arg(f):
-        def func(*args):
-            if any(arg is None for arg in args):
-                return f('')
-            return f(*args)
-        return func
 
 
 @AttributeWrapper.decorate_all(AttributeWrapper.set_autocorrect())
@@ -79,17 +76,13 @@ class Command:
     TODO implement everything and maybe add Slack, Trello, Github
     Context menu in extension for TinyURL, Wikipedia
     """
+    def help(args):
+        pass
 
     def news(args):
         pass
 
-    def remindme(args):
-        pass
-
     def syn(args):
-        pass
-
-    def m(args):
         pass
 
     def java(args):
@@ -98,26 +91,27 @@ class Command:
     def py(args):
         pass
 
-    def matlab(args):
-        pass
-
-    def canvas(args):
-        pass
-
     def p(args):
         pass
 
     def mfp(args):
         pass
 
+    def canvas(args):
+        return 'https://gatech.instructure.com/'
+
+    def msg(args):
+        if args:
+            return 'https://www.messenger.com/?qa={0}'.format(args)
+        return 'https://www.messenger.com/'
+
+    def matlab(args):
+        if args:
+            return 'https://www.mathworks.com/help/search.html?qdoc={0}&submitsearch='.format(args)
+        return 'https://www.mathworks.com/help/'
+
     def drive(args):
-        pass
-
-    def drop(args):
-        pass
-
-    def help(args):
-        pass
+        return 'https://drive.google.com/drive/my-drive'
 
     def man(arg):
         if arg:
@@ -233,6 +227,9 @@ class Command:
 
     def stamps(args):
         return 'http://login.gatech.edu/cas/login?TARGET=https%3a%2f%2fwww.myappointment.health.gatech.edu%2fdefault.aspx'
+
+    def jobs():
+        return 'https://gatech-csm.symplicity.com/students/index.php?s=home'
 
 
 def test_attribute_wrapper(output=True):
