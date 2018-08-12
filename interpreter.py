@@ -5,6 +5,22 @@ __author__ = "Abhishek Tumuluru"
 __email__ = "abhishek.tumuluru@gatech.edu"
 
 from Command import Command
+from functools import lru_cache, wraps
+import threading
+
+
+def synchronize(lock):
+    """Wrap function with lock acquire and release"""
+    def wrapper(func):
+        @wraps(func)
+        def locked(*args, **kwargs):
+            lock.acquire()
+            try:
+                return func(*args, **kwargs)
+            finally:
+                lock.release()
+        return locked
+    return wrapper
 
 
 def create_shortcut_to_function_map():
@@ -34,17 +50,20 @@ def tokenize(search_query):
         return None, None
     split_search_query = search_query.split(maxsplit=1)
     if len(split_search_query) == 1:
-        print(split_search_query[-1])
         return split_search_query[-1], None
-    print(split_search_query)
     return split_search_query
 
 
+shortcut_to_function_map = create_shortcut_to_function_map()
+
+
+@synchronize(threading.Lock())
+@lru_cache(maxsize=128, typed=False)
 def get_redirect_url(search_query):
+    # Use LRU cache to stash recent queries to save time for upcoming calls
     cmd, arg = tokenize(search_query)
     if cmd is None:
         return ''
-    shortcut_to_function_map = create_shortcut_to_function_map()
     if cmd in shortcut_to_function_map:
         try:
             # Get the relevant Command function pointer and invoke it on arg

@@ -11,7 +11,7 @@ class AttributeWrapper:
     or autocorrect
     """
     def decorate_all(decorator):
-        # Decorate all callables in a class
+        # Decorate all callables in a class, used for functions here
         def wrapper(cls):
             for attr in cls.__dict__:
                 func = getattr(cls, attr)
@@ -34,6 +34,16 @@ class AttributeWrapper:
                 func.shortcut = "c"
             elif func.__name__ == "reddit":
                 func.shortcut = "r"
+            elif func.__name__ == "stack_overflow":
+                func.shortcut = "st"
+            elif func.__name__ == "stack_overflow_lucky":
+                func.shortcut = "stl"
+            elif func.__name__ == "wikipedia":
+                func.shortcut = "w"
+            elif func.__name__ == "twitter":
+                func.shortcut = "tw"
+            elif func.__name__ == "courseoff":
+                func.shortcut = "co"
             # Add other potential specific shortcuts here
             else:
                 func.shortcut = func.__name__
@@ -50,6 +60,13 @@ class AttributeWrapper:
             return func
         return assign
 
+    def convert_none_arg(f):
+        def func(*args):
+            if any(arg is None for arg in args):
+                return f('')
+            return f(*args)
+        return func
+
 
 @AttributeWrapper.decorate_all(AttributeWrapper.set_autocorrect())
 @AttributeWrapper.decorate_all(AttributeWrapper.assign_command_shortcut())
@@ -60,24 +77,10 @@ class Command:
     client makes commands extendable at the cost of latency.
 
     TODO implement everything and maybe add Slack, Trello, Github
+    Context menu in extension for TinyURL, Wikipedia
     """
-    def stock(args):
-        pass
-
-    def tsquare(args):
-        return 'http://t-square.gatech.edu/portal'
-
-    def default(arg):
-        # Default to google search
-        return 'http://www.google.com/search?q={0}'.format(arg)
-
-    def spotify(args):
-        return 'http://open.spotify.com/search/results/{0}'.format(args)
 
     def news(args):
-        pass
-
-    def cal(args):
         pass
 
     def remindme(args):
@@ -86,21 +89,7 @@ class Command:
     def syn(args):
         pass
 
-    def define(arg):
-        return 'https://www.google.com/search?q=define%3A+{0}'.format(arg)
-
-    def yt(args):
-        if args:
-            return 'http://www.youtube.com/results?search_query={0}&search_type=&aq=-1&oq='.format(args)
-        return 'http://www.youtube.com'
-
     def m(args):
-        pass
-
-    def reddit(args):
-        pass
-
-    def man(args):
         pass
 
     def java(args):
@@ -130,9 +119,55 @@ class Command:
     def help(args):
         pass
 
+    def man(arg):
+        if arg:
+            return 'http://ss64.com/bash/{0}.html'.format(arg)
+        return 'http://ss64.com/bash/'
+
+    def stock(arg):
+        if arg:
+            return 'http://finance.yahoo.com/quote/{0}'.format(arg)
+        return 'http://finance.yahoo.com/'
+
+    def im_feeling_lucky(args):
+        if args:
+            return 'http://www.google.com/search?btnI=1&q={0}'.format(args)
+        return 'http://www.google.com/search?btnI=1&q='
+
+    def tsquare(args):
+        return 'http://t-square.gatech.edu/portal'
+
+    def default(arg):
+        # Default to google search
+        return 'http://www.google.com/search?q={0}'.format(arg)
+
+    def spotify(args):
+        if args:
+            return 'http://open.spotify.com/search/results/{0}'.format(args)
+        return 'http://open.spotify.com/collection/playlists'
+
+    def define(arg):
+        return 'https://www.google.com/search?q=define%3A+{0}'.format(arg)
+
+    def cal(args):
+        return 'https://calendar.google.com/calendar/r'
+
+    def yt(args):
+        if args:
+            return 'http://www.youtube.com/results?search_query={0}&search_type=&aq=-1&oq='.format(args)
+        return 'http://www.youtube.com'
+
+    def reddit(args):
+        if args:
+            args_split = args.split(maxsplit=1)
+            if len(args_split) == 1:
+                return 'http://www.reddit.com/r/{0}'.format(args)
+            return 'http://www.reddit.com/r/{0}/search?q={1}&restrict_sr=1'.format(args_split[0], args_split[1])
+        return 'http://www.reddit.com/'
+
     def fb(arg):
         if arg:
-            return '''http://www.fb.com/search/top/?q={0}'''.format(arg)
+            return 'http://www.fb.com/search/top/?q={0}'.format(arg)
         return 'http://www.fb.com'
 
     def menu(args):
@@ -145,28 +180,59 @@ class Command:
         return 'https://buzzport.gatech.edu/cp/home/displaylogin'
 
     def timer(args):
-        pass
+        if args:
+            return 'https://www.online-stopwatch.com/timer/{0}'.format(args)
+        return Command.default("timer")
+
+    def stack_overflow(args):
+        if args:
+            return Command.default('{0} site:stackoverflow.com'.format(args))
+        return 'http://www.stackoverflow.com/'
+
+    def stack_overflow_lucky(args):
+        # Will attempt I'm feeling lucky if there is high confidence
+        if args:
+            return '{0} site:stackoverflow.com'.format(Command.im_feeling_lucky(args))
+        return 'http://www.stackoverflow.com/'
 
     def dw(args):
-        pass
+        return 'https://login.gatech.edu/cas/login?service=https%3A%2F%2Fdegreeaudit.gatech.edu'
 
-    def tw(args):
-        pass
+    def twitter(arg):
+        if arg:
+            return 'https://twitter.com/{0}'.format(arg)
+        return 'https://twitter.com/'
 
-    def wiki(args):
-        pass
+    def wikipedia(args):
+        try:
+            if args:
+                import wikipedia
+                results = wikipedia.search(args, results=1, suggestion=True)
+                if len(results[0]) > 0:
+                    page = wikipedia.page(results[0][0])
+                else:
+                    page = wikipedia.page(args)
+                return page.url
+            return 'http://www.wikipedia.org/'
+        except ImportError:
+            return 'https://www.wikipedia.org/'
 
     def ride(args):
         return 'https://gt-new.ridecell.com/request'
 
     def gmaps(args):
-        pass
+        if args:
+            return 'http://www.google.com/maps/search/{0}'.format(args)
+        return 'http://www.google.com/maps/search/'
 
     def mail(args):
-        pass
+        return 'http://www.mail.gatech.edu'
 
     def courseoff(args):
-        pass
+        return 'http://gatech.courseoff.com/workspace'
+
+    def stamps(args):
+        return 'http://login.gatech.edu/cas/login?TARGET=https%3a%2f%2fwww.myappointment.health.gatech.edu%2fdefault.aspx'
 
 
 def test_attribute_wrapper(output=True):
