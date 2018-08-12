@@ -28,7 +28,7 @@ class AttributeWrapper:
                 func.shortcut = "$"
             elif func.__name__ == "buzzport":
                 func.shortcut = "b"
-            elif func.__name__ == "t-square":
+            elif func.__name__ == "tsquare":
                 func.shortcut = "t"
             elif func.__name__ == "canvas":
                 func.shortcut = "c"
@@ -48,6 +48,10 @@ class AttributeWrapper:
                 func.shortcut = "spot"
             elif func.__name__ == "matlab":
                 func.shortcut = "mat"
+            elif func.__name__ == "groupme":
+                func.shortcut = "gr"
+            elif func.__name__ == "wolfram":
+                func.shortcut = "wa"
             # Add other potential specific shortcuts here
             else:
                 func.shortcut = func.__name__
@@ -73,10 +77,10 @@ class Command:
     and returning urls to redirect to. Handing logic on server instead of
     client makes commands extendable at the cost of latency.
 
-    TODO implement everything and maybe add Slack, Trello, Github
-    Context menu in extension for TinyURL, Wikipedia
+    Add context menu in extension for TinyURL, Wikipedia, GT CourseAid
     """
     def help(args):
+        # TODO return http://www.servername.com/help/
         pass
 
     def news(args):
@@ -93,6 +97,12 @@ class Command:
 
     def slack(args):
         pass
+
+    def wolfram(args):
+        return 'http://www.wolframalpha.com/input/?i={0}'.format(args or '')
+
+    def groupme(args):
+        return 'https://web.groupme.com/chats'
 
     def tiny(arg):
         if arg:
@@ -127,9 +137,7 @@ class Command:
         return 'http://finance.yahoo.com/'
 
     def im_feeling_lucky(args):
-        if args:
-            return 'http://www.google.com/search?btnI=1&q={0}'.format(args)
-        return 'http://www.google.com/search?btnI=1&q='
+        return 'http://www.google.com/search?btnI=1&q={0}'.format(args or '')
 
     def tsquare(args):
         return 'http://t-square.gatech.edu/portal'
@@ -200,9 +208,7 @@ class Command:
             'service=https%3A%2F%2Fdegreeaudit.gatech.edu'
 
     def twitter(arg):
-        if arg:
-            return 'https://twitter.com/{0}'.format(arg)
-        return 'https://twitter.com/'
+        return 'https://twitter.com/{0}'.format(arg or '')
 
     def wikipedia(args):
         try:
@@ -222,9 +228,7 @@ class Command:
         return 'https://gt-new.ridecell.com/request'
 
     def gmaps(args):
-        if args:
-            return 'http://www.google.com/maps/search/{0}'.format(args)
-        return 'http://www.google.com/maps/search/'
+        return 'http://www.google.com/maps/search/{0}'.format(args or '')
 
     def mail(args):
         return 'http://www.mail.gatech.edu'
