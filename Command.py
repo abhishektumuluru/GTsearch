@@ -48,7 +48,7 @@ class AttributeWrapper:
                 func.shortcut = "spot"
             elif func.__name__ == "matlab":
                 func.shortcut = "mat"
-            # add other potential specific shortcuts here
+            # Add other potential specific shortcuts here
             else:
                 func.shortcut = func.__name__
             return func
@@ -83,12 +83,6 @@ class Command:
         pass
 
     def syn(args):
-        pass
-
-    def java(args):
-        pass
-
-    def py(args):
         pass
 
     def p(args):
@@ -228,7 +222,7 @@ class Command:
     def stamps(args):
         return 'http://login.gatech.edu/cas/login?TARGET=https%3a%2f%2fwww.myappointment.health.gatech.edu%2fdefault.aspx'
 
-    def jobs():
+    def jobs(args):
         return 'https://gatech-csm.symplicity.com/students/index.php?s=home'
 
 
