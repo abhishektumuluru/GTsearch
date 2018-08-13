@@ -22,37 +22,20 @@ class AttributeWrapper:
 
     def assign_command_shortcut():
         def assign(func):
-            if func.__name__ == "define":
-                func.shortcut = "def"
-            elif func.__name__ == "stock":
-                func.shortcut = "$"
-            elif func.__name__ == "buzzport":
-                func.shortcut = "b"
-            elif func.__name__ == "tsquare":
-                func.shortcut = "t"
-            elif func.__name__ == "canvas":
-                func.shortcut = "c"
-            elif func.__name__ == "reddit":
-                func.shortcut = "r"
-            elif func.__name__ == "stack_overflow":
-                func.shortcut = "st"
-            elif func.__name__ == "stack_overflow_lucky":
-                func.shortcut = "stl"
-            elif func.__name__ == "wikipedia":
-                func.shortcut = "w"
-            elif func.__name__ == "twitter":
-                func.shortcut = "tw"
-            elif func.__name__ == "courseoff":
-                func.shortcut = "co"
-            elif func.__name__ == "spotify":
-                func.shortcut = "spot"
-            elif func.__name__ == "matlab":
-                func.shortcut = "mat"
-            elif func.__name__ == "groupme":
-                func.shortcut = "gr"
-            elif func.__name__ == "wolfram":
-                func.shortcut = "wa"
-            # Add other potential specific shortcuts here
+            # Add potential specific shortcuts here
+            name_to_shortcut = {'default': 'g', 'define': 'def', 'stock': '$',
+                                'buzzport': 'buzz', 'tsquare': 't',
+                                'canvas': 'c', 'reddit': 'r',
+                                'stack_overflow': 'st',
+                                'wikipedia': 'w', 'twitter': 'tw',
+                                'courseoff': 'co', 'spotify': 'spot',
+                                'matlab': 'mat', 'groupme': 'gr',
+                                'wolfram': 'wa', 'synonym': 'sn',
+                                'amazon': 'am', 'myfitnesspal': 'mf',
+                                'gtmemes': 'gtm', 'slack': 'sl',
+                                'academic_calendar': 'acal'}
+            if func.__name__ in name_to_shortcut:
+                func.shortcut = name_to_shortcut[func.__name__]
             else:
                 func.shortcut = func.__name__
             return func
@@ -80,23 +63,37 @@ class Command:
     Add context menu in extension for TinyURL, Wikipedia, GT CourseAid
     """
     def help(args):
-        # TODO return http://www.servername.com/help/
+        # TODO return http://www.servername.com/
         pass
 
-    def news(args):
-        pass
-
-    def syn(args):
-        pass
-
-    def p(args):
-        pass
-
-    def mfp(args):
-        pass
+    def academic_calendar(args):
+        return 'https://registrar.gatech.edu/calendar'
 
     def slack(args):
-        pass
+        if args:
+            return 'https://{0}.slack.com/messages'.format(args)
+        return 'https://slack.com/messages'
+
+    def gtmemes(args):
+        return 'https://www.facebook.com/groups/GTmemesforbuzzedteens/'
+
+    def news(args):
+        return 'http://www.news.google.com'
+
+    def synonym(args):
+        if args:
+            return 'http://www.google.com/search?q=synonym%3A+{0}'.format(args)
+        return 'http://www.thesaurus.com/'
+
+    def myfitnesspal(args):
+        return 'http://www.myfitnesspal.com/'\
+            'food/search?search={0}'.format(args or '')
+
+    def amazon(args):
+        return 'http://www.amazon.com/s/?field-keywords={0}'.format(args or '')
+
+    def p(args):
+        return 'http://www.piazza.com'
 
     def wolfram(args):
         return 'http://www.wolframalpha.com/input/?i={0}'.format(args or '')

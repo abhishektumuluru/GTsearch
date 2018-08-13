@@ -65,6 +65,7 @@ shortcut_to_function_map = create_shortcut_to_function_map()
 def get_redirect_url(search_query):
     # Use LRU cache to stash recent queries to save time for upcoming calls
     cmd, arg = tokenize(search_query)
+    default = Command.default(cmd + ' ' + (arg or ''))
     if cmd is None:
         return ''
     if cmd in shortcut_to_function_map:
@@ -75,18 +76,18 @@ def get_redirect_url(search_query):
             url = command_function.__call__(arg)
             if url is None:
                 # If shortcut is not implemented but is present
-                return Command.default(cmd + ' ' + (arg if arg else ''))
+                return Command.default(cmd + ' ' + (arg or ''))
             return url
         except TypeError as te:
             print(repr(te))
-            return Command.default(arg)
+            return default
         except AttributeError as ae:
             print(repr(ae))
-            return Command.default(arg)
+            return default
         except Exception as e:
             print(repr(e))
-            return Command.default(arg)
-    return Command.default(cmd + ' ' + (arg if arg else ''))
+            return default
+    return default
 
 
 def autocorrect_shortcut(split_search_query):
