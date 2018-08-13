@@ -3,6 +3,8 @@
 __version__ = "1.0.0"
 __author__ = "Abhishek Tumuluru"
 __email__ = "abhishek.tumuluru@gatech.edu"
+__status__ = "testing"
+
 
 from Command import Command
 from functools import lru_cache, wraps
@@ -65,9 +67,9 @@ shortcut_to_function_map = create_shortcut_to_function_map()
 def get_redirect_url(search_query):
     # Use LRU cache to stash recent queries to save time for upcoming calls
     cmd, arg = tokenize(search_query)
-    default = Command.default(cmd + ' ' + (arg or ''))
     if cmd is None:
         return ''
+    default = Command.default(cmd + ' ' + (arg or ''))
     if cmd in shortcut_to_function_map:
         try:
             # Get the relevant Command function pointer and invoke it on arg

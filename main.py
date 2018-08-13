@@ -3,6 +3,8 @@
 __version__ = "1.0.0"
 __author__ = "Abhishek Tumuluru"
 __email__ = "abhishek.tumuluru@gatech.edu"
+__status__ = "testing"
+
 
 import interpreter
 from flask import request, Flask, redirect, url_for

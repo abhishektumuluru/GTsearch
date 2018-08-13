@@ -3,6 +3,7 @@
 __version__ = "1.0.0"
 __author__ = "Abhishek Tumuluru"
 __email__ = "abhishek.tumuluru@gatech.edu"
+__status__ = "testing"
 
 
 class AttributeWrapper:
@@ -38,6 +39,13 @@ class AttributeWrapper:
                 func.shortcut = name_to_shortcut[func.__name__]
             else:
                 func.shortcut = func.__name__
+            return func
+        return assign
+
+    def invisible():
+        # Hidden commands
+        def assign(func):
+            func.invisible = True
             return func
         return assign
 
@@ -239,6 +247,14 @@ class Command:
 
     def jobs(args):
         return 'https://gatech-csm.symplicity.com/students/index.php?s=home'
+
+    def chegg(args):
+        # I don't actually use chegg lol
+        if args:
+            return 'https://www.chegg.com/search/{0}/federated?'\
+                'trackid=4f5fa1f0&strackId=2bb03257&event=filter_submit'\
+                '&filterloc=serp_tab#p=1'.format(args)
+        return 'https://www.chegg.com/'
 
 
 def test_attribute_wrapper(output=True):
