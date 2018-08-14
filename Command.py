@@ -31,7 +31,9 @@ class AttributeWrapper:
                                 'stack_overflow_lucky': 'stl',
                                 'wikipedia': 'w', 'twitter': 'tw',
                                 'courseoff': 'co', 'spotify': 'spot',
-                                'matlab': 'mat', 'groupme': 'gr',
+                                'robinhoodstock': 'rh',
+                                'robinhoodcrypto': 'rhc', 'matlab': 'mat',
+                                'groupme': 'gr',
                                 'wolfram': 'wa', 'synonym': 'sn',
                                 'amazon': 'am', 'myfitnesspal': 'mf',
                                 'gtmemes': 'gtm', 'slack': 'sl',
@@ -88,6 +90,12 @@ class Command:
 
     def news(args):
         return 'http://www.news.google.com'
+
+    def robinhoodstock(args):
+        return 'https://robinhood.com/stocks/{0}'.format(args or '')
+
+    def robinhoodcrypto(args):
+        return 'https://robinhood.com/crypto/{0}'.format(args or '')
 
     def synonym(args):
         if args:
