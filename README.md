@@ -38,11 +38,15 @@ Type 'help' and hit enter to see the available list of commands.
     
     > sl myworkspace
 - Want to get to your favorite subreddit quickly?
-    > r gatech OR 
+    > r gatech 
     
     > r gatech 1331 professor - to search "1331 professor" in r/gatech
 - Stock information on Yahoo! Finance at your fingertips with the dollar symbol
   > $ tsla
+- Robinhood and Robinhood Cryto search
+  > rh / rhc
+  
+  > rh nflx / rhc btc
 - Perform a Chegg search instantly
   > chegg Discrete Mathematics Rosen
 - Wolfram Alpha search engine
