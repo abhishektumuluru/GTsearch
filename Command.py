@@ -28,6 +28,7 @@ class AttributeWrapper:
                                 'buzzport': 'buzz', 'tsquare': 't',
                                 'canvas': 'c', 'reddit': 'r',
                                 'stack_overflow': 'st',
+                                'stack_overflow_lucky': 'stl',
                                 'wikipedia': 'w', 'twitter': 'tw',
                                 'courseoff': 'co', 'spotify': 'spot',
                                 'matlab': 'mat', 'groupme': 'gr',
