@@ -106,7 +106,36 @@ And dozens of other shortcuts
 
 > tiny https://www.youtube.com/watch?v=dQw4w9WgXcQ -> Generate a Tiny url http://tinyurl.com/2fcpre6
 
+## Local setup
+Python3
+Requirements 
+```
+pip install wikipedia
 
-GTsearch is written in Python with the Flask framework for routing. It simply parses search strings and splits by the first whitespace, and the first result token is the command and the rest are optional arguments. 
+pip install Flask
+```
+```
+>>> python main.py
+
+ * Serving Flask app "main" (lazy loading)
+ * Environment: production
+   WARNING: Do not use the development server in a production environment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 270-902-922
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+```
+
+#### Chrome
+Settings -> Search Engine -> Manage Search Engine -> Add
+
+Enter anything for Search engine and Keyword
+
+For URL, paste http://127.0.0.1:5000/q/?search=%s or whatever IP and port your server is being run on
+
+
+GTsearch is written in Python and uses the Flask framework for routing. Its logic is trivial: it simply parses search strings and splits by the first whitespace, and the first result token is the command and the rest are optional arguments. 
 
 Pull requests in this repository are very welcome as are feedback/criticiscm/new shortcut suggestions
